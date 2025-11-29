@@ -1,0 +1,19 @@
+0 verbose cli /home/deploy/.nvm/versions/node/v22.21.1/bin/node /home/deploy/.nvm/versions/node/v22.21.1/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@10.9.4
+2 info using node@v22.21.1
+3 silly config load:file:/home/deploy/.nvm/versions/node/v22.21.1/lib/node_modules/npm/npmrc
+4 silly config load:file:/home/deploy/front/my-frontend/.npmrc
+5 silly config load:file:/home/deploy/.npmrc
+6 silly config load:file:/home/deploy/.nvm/versions/node/v22.21.1/etc/npmrc
+7 verbose title npm exec tsc --init
+8 verbose argv "exec" "--" "tsc" "--init"
+9 verbose logfile logs-max:10 dir:/home/deploy/.npm/_logs/2025-11-27T04_32_25_354Z-
+10 verbose logfile /home/deploy/.npm/_logs/2025-11-27T04_32_25_354Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly logfile done cleaning log files
+13 verbose cwd /home/deploy/front/my-frontend
+14 verbose os Linux 6.8.0-87-generic
+15 verbose node v22.21.1
+16 verbose npm  v10.9.4
+17 verbose exit 0
+18 info ok

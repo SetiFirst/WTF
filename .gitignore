@@ -1,0 +1,26 @@
+# Кэш и временные файлы
+.cache/
+.local/
+.lesshst
+.wget-hsts
+
+# История и профили шелла
+.bash_history
+.bash_logout
+.bashrc
+.profile
+
+# Dotnet
+.dotnet/
+
+# VS Code Server
+.vscode-server/
+
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Admin flag
+.sudo_as_admin_successful
+
+.nvm/
