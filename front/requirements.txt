@@ -1,0 +1,7 @@
+react
+react-dom
+typescript
+vite
+@vitejs/plugin-react
+sass
+bootstrap
