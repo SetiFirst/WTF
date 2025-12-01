@@ -1,0 +1,119 @@
+
+
+services:
+  proxy:
+    image: nginx:latest
+    container_name: proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - auth
+      - profiles
+      - courses
+      - assistant
+      - api
+      - front
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: main
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+
+  auth:
+    build: ./auth
+    container_name: auth
+    environment:
+      DATABASE_URL: postgresql://app:app@postgres:5432/main
+      REDIS_HOST: redis
+    env_file:
+      - .env
+    volumes:
+      - ./auth:/app        # монтируем код для hot-reload
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - postgres
+      - redis
+
+  profiles:
+    build: ./profiles
+    container_name: profiles
+    environment:
+      DATABASE_URL: postgresql://app:app@postgres:5432/main
+      REDIS_HOST: redis
+    volumes:
+      - ./profiles:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - postgres
+      - redis
+
+  courses:
+    build: ./courses
+    container_name: courses
+    environment:
+      DATABASE_URL: postgresql://app:app@postgres:5432/main
+      REDIS_HOST: redis
+    volumes:
+      - ./courses:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - postgres
+      - redis
+
+  api:
+    build: ./api
+    container_name: api
+    environment:
+      DATABASE_URL: postgresql://app:app@postgres:5432/main
+      REDIS_HOST: redis
+    volumes:
+      - ./api:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - postgres
+      - redis
+
+  front:
+    build: ./front
+    container_name: front
+    volumes:
+      - ./front/my-frontend:/app
+    command: npm run dev -- --host 0.0.0.0
+    depends_on:
+      - redis
+      - postgres
+      - auth
+      - courses
+      - profiles
+    ports:
+      - "5173:5173"   # vite dev server
+    environment:
+      - NODE_ENV=development
+
+
+  assistant:
+    build: ./assistant
+    container_name: assistant
+    environment:
+      REDIS_HOST: redis
+    volumes:
+      - ./assistant:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - redis
+
+volumes:
+  postgres_data:
